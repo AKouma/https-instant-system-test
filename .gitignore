@@ -32,3 +32,7 @@ google-services.json
 
 # Android Profiling
 *.hprof
+/app/
+
+#secrets files
+secrets.json
