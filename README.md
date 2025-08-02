@@ -1,2 +1,2 @@
-# https-instant-system-test
+# instant-system-test
 Native Android application for displaying news in a basic way.
