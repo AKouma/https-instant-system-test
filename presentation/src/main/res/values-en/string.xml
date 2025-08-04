@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="today_at">Today at %s</string>
+    <string name="yesterday_At">Yesterday at %s</string>
+    <string name="at">%s at %s</string>
+    <string name="breaking_news">Breaking News</string>
+    <string name="news_brief">News in Brief</string>
+    <string name="retry_later">Maintenance in progress. Please try again later.</string>
+    <string name="more_information">For more information, visit : </string>
+    <string name="written_by">Written by : %s</string>
+</resources>

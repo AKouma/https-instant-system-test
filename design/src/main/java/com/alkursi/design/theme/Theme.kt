@@ -8,7 +8,10 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -33,7 +36,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun BasearchitectureTheme(
+fun FlashNewsTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
@@ -55,3 +58,40 @@ fun BasearchitectureTheme(
         content = content
     )
 }
+
+object AppGlobalTheme {
+    val spacing = Spacing()
+    val dimensions = Dimensions()
+    val typography: androidx.compose.material3.Typography
+        @Composable get() = MaterialTheme.typography
+    val colorScheme
+        @Composable get() = MaterialTheme.colorScheme
+}
+
+@Immutable
+data class Spacing(
+    val thin: Dp = 4.dp,
+    val smallest: Dp = 8.dp,
+    val small: Dp = 12.dp,
+    val medium: Dp = 14.dp,
+    val normal: Dp = 16.dp,
+    val large: Dp = 18.dp,
+    val extraLarge: Dp = 20.dp,
+    val big: Dp = 22.dp,
+    val largeBig: Dp = 24.dp,
+    val extraBig: Dp = 26.dp,
+    val biggest: Dp = 28.dp,
+    val huge: Dp = 32.dp,
+    val largeHuge: Dp = 34.dp,
+    val extraHuge: Dp = 36.dp,
+    val hugeBig: Dp = 38.dp,
+    val largest: Dp = 40.dp
+)
+
+@Immutable
+data class Dimensions(
+    val none: Dp = 0.dp,
+    val smallCardWidth: Dp = 1.dp,
+    val smallCardBorder: Dp = 16.dp,
+    val smallElevation: Dp = 4.dp,
+)

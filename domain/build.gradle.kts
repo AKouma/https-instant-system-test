@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -8,7 +9,7 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -37,7 +38,11 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.koin)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
+    implementation(libs.datastore)
+    implementation(libs.serialization)
+    testImplementation(libs.bundles.koin.testing)
     implementation(libs.coroutines)
     implementation(libs.viewmodel)
     testImplementation(libs.junit)

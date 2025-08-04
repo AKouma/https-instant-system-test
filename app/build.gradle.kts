@@ -2,21 +2,23 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "com.alkursi.base_architecture"
+    namespace = "com.alkursi.fnews"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.alkursi.base_architecture"
-        minSdk = 24
+        applicationId = "com.alkursi.fnews"
+        minSdk = 26
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
     flavorDimensions += "env"
     productFlavors {
         create("dev") {
@@ -35,9 +37,7 @@ android {
     }
 
     buildTypes {
-        debug {
-            isMinifyEnabled = false
-        }
+        debug { isMinifyEnabled = false }
         release {
             isMinifyEnabled = true
             proguardFiles(
@@ -46,35 +46,15 @@ android {
             )
         }
     }
-    android.applicationVariants.all {
-        val variant = this
-        val variantName = name // e.g., devDebug, betaRelease, etc.
-
-        tasks.named("bundle${variantName.replaceFirstChar { it.uppercase() }}").configure {
-            doLast {
-                val aabDir = File(buildDir, "outputs/bundle/$variantName")
-                val aab = File(aabDir, "app.aab")
-                if (aab.exists()) {
-                    val renamedAab = File(aabDir, "app-$variantName.aab")
-                    aab.renameTo(renamedAab)
-                    println("Renamed AAB to ${renamedAab.absolutePath}")
-                }
-            }
-        }
-    }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
-    }
-}
+    kotlinOptions { jvmTarget = "11" }
 
+    buildFeatures { compose = true }
+}
 dependencies {
 
     implementation(project(":presentation"))
@@ -89,10 +69,13 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(libs.koin)
+    implementation(libs.serialization)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
+    testImplementation(libs.bundles.koin.testing)
+    implementation(libs.threetenabp)
     implementation(libs.coroutines)
     implementation(libs.viewmodel)
-    testImplementation(libs.koin.test.junit)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

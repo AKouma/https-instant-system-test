@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -23,6 +24,20 @@ android {
             )
         }
     }
+
+    flavorDimensions += "env"
+    productFlavors {
+        create("dev") {
+            dimension = "env"
+        }
+        create("beta") {
+            dimension = "env"
+        }
+        create("prod") {
+            dimension = "env"
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -30,16 +45,25 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+
+    buildFeatures { buildConfig = true }
 }
 
 dependencies {
 
     implementation(project(":domain"))
+    implementation(project(":config"))
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.koin)
+    implementation(libs.datastore)
+    implementation(libs.serialization)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
+    testImplementation(libs.bundles.koin.testing)
+    implementation(libs.threetenabp)
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp)
