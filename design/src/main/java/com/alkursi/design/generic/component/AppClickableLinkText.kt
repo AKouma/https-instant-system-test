@@ -16,7 +16,7 @@ import com.alkursi.core.NO_OP
 import com.alkursi.design.theme.AppGlobalTheme
 
 @Composable
-fun ClickableLinkText(
+fun AppClickableLinkText(
     text: String,
     linkText: String? = text,
     linkUrl: String,
@@ -63,7 +63,7 @@ fun ClickableLinkText(
 @Composable
 fun ClickableLinkTextPreview() {
     MaterialTheme {
-        ClickableLinkText(
+        AppClickableLinkText(
             text = "Pour plus d'information, visitez ce lien : ",
             linkText = "Google",
             linkUrl = "https://www.google.com",

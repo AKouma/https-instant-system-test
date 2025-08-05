@@ -6,8 +6,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,7 +30,24 @@ import com.alkursi.design.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FNewsSettingsToolbar(onLongPress: () -> Unit) {
+fun AppToolbar(title: String, onCliclk: () -> Unit = { NO_OP }) {
+    TopAppBar(
+        title = { Text(text = title) },
+        navigationIcon = {
+            IconButton(onClick = onCliclk) {
+                Icon(
+                    Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.back)
+                )
+            }
+        },
+    )
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AppToolbar(onLongPress: () -> Unit) {
 
     var isPressed by remember { mutableStateOf(false) }
 
@@ -54,5 +77,5 @@ private val ImageSize = 80.dp
 @Composable
 @PreviewLightDark
 private fun FNewsSettingsToolbarPreview() {
-    Surface { FNewsSettingsToolbar(onLongPress = { NO_OP }) }
+    Surface { AppToolbar(onLongPress = { NO_OP }) }
 }

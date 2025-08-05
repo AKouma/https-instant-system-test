@@ -10,7 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.alkursi.design.generic.component.FNewsSettingsToolbar
+import com.alkursi.design.generic.component.AppToolbar
 import com.alkursi.domain.news.model.Article
 import com.alkursi.presentation.common.AppRoutes
 import com.alkursi.presentation.common.EventListener
@@ -38,7 +38,7 @@ fun HomeScreen(
         modifier = Modifier
             .systemBarsPadding()
             .fillMaxSize(),
-        topBar = { FNewsSettingsToolbar(onLongPress = { navigateToSettings(navController) }) })
+        topBar = { AppToolbar(onLongPress = { navigateToSettings(navController) }) })
     { innerPadding ->
         when (val homeState = state.value) {
             is HomeState.Loaded -> HomeContentLoaded(homeState, innerPadding, viewModel)

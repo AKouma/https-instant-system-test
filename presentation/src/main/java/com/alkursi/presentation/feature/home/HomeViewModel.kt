@@ -2,7 +2,6 @@ package com.alkursi.presentation.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.alkursi.domain.country.CountryRepository
 import com.alkursi.domain.news.GetArticlesUseCase
 import com.alkursi.domain.news.model.Article
 import com.alkursi.domain.news.model.NewsError
@@ -52,11 +51,6 @@ class HomeViewModel(private val getArticlesUseCase: GetArticlesUseCase) : ViewMo
     }
 
     private fun canLoadArticles(): Boolean = (currentPage - 1) * pageSize < totalResults
-
-    fun resetPagination() {
-        currentPage = 1
-        totalResults = Int.MAX_VALUE
-    }
 
     fun navigateToArticleDetails(article: Article) {
         eventsChanel.trySend(HomeEvent.NavigateToArticleDetails(article))

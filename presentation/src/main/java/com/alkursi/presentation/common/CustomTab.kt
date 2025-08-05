@@ -17,11 +17,16 @@ fun openCustomTab(context: Context, url: String) {
         val customTabsIntent = builder.build()
         customTabsIntent.launchUrl(context, url.toUri())
     } catch (e: Exception) {
-        try {
-            val intent = Intent(Intent.ACTION_VIEW, url.toUri())
-            context.startActivity(intent)
-        } catch (ex: Exception) {
-            Log.e("ClickableLinkText", "Impossible d'ouvrir le lien: $url", ex)
-        }
+        Log.e("ClickableLinkText", "Impossible d'ouvrir le lien: $url", e)
+        openDeviceBrowsers(url, context)
+    }
+}
+
+private fun openDeviceBrowsers(url: String, context: Context) {
+    try {
+        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+        context.startActivity(intent)
+    } catch (ex: Exception) {
+        Log.e("ClickableLinkText", "Impossible d'ouvrir le lien: $url", ex)
     }
 }

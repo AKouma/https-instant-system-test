@@ -9,10 +9,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.alkursi.design.generic.component.AppLoaderScreen
+import com.alkursi.design.generic.component.AppToolbar
+import com.alkursi.presentation.R
 import com.alkursi.presentation.common.component.NoArticlesContent
 import com.alkursi.presentation.feature.details.component.NewsDetailsContent
 import org.koin.androidx.compose.koinViewModel
@@ -28,7 +31,6 @@ internal fun NewsDetailsScreen(
     val viewModel = koinViewModel<NewsDetailsViewModel> {
         parametersOf(articleId)
     }
-
     val state = viewModel.state.collectAsStateWithLifecycle()
 
 
@@ -36,7 +38,11 @@ internal fun NewsDetailsScreen(
         modifier = Modifier
             .fillMaxWidth()
             .systemBarsPadding(),
-        topBar = {}
+        topBar = {
+            AppToolbar(
+                title = stringResource(R.string.more_infos),
+                onCliclk = { navController.navigateUp() })
+        }
     ) { innerPadding ->
 
         val context = LocalContext.current

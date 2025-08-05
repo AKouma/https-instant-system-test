@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.alkursi.core.NO_OP
-import com.alkursi.design.generic.component.ClickableLinkText
+import com.alkursi.design.generic.component.AppClickableLinkText
 import com.alkursi.design.theme.AppGlobalTheme
 import com.alkursi.domain.news.model.Article
 import com.alkursi.domain.news.model.Source
@@ -39,7 +39,7 @@ internal fun NewsDetailsContent(
             modifier = Modifier.padding(horizontal = AppGlobalTheme.spacing.small)
         )
         Spacer(modifier = Modifier.size(AppGlobalTheme.spacing.small))
-        ClickableLinkText(
+        AppClickableLinkText(
             text = stringResource(R.string.more_information),
             linkText = article.url,
             linkUrl = article.url,
@@ -50,13 +50,15 @@ internal fun NewsDetailsContent(
             }
         )
         Spacer(modifier = Modifier.size(AppGlobalTheme.spacing.small))
-        Text(
-            text = stringResource(R.string.written_by, article.author.orEmpty()),
-            style = AppGlobalTheme.typography.bodyMedium,
-            modifier = Modifier
-                .clickable(onClick = { NO_OP })
-                .padding(horizontal = AppGlobalTheme.spacing.small)
-        )
+        article.author?.let { author ->
+            Text(
+                text = stringResource(R.string.written_by, author),
+                style = AppGlobalTheme.typography.bodyMedium,
+                modifier = Modifier
+                    .clickable(onClick = { NO_OP })
+                    .padding(horizontal = AppGlobalTheme.spacing.small)
+            )
+        }
     }
 }
 

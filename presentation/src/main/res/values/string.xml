@@ -8,4 +8,5 @@
     <string name="retry_later">Maintenance en cours. Merci de réessayer plus tard</string>
     <string name="more_information">Pour plus d\'informations, visitez : </string>
     <string name="written_by">Ecrit par : %s</string>
+    <string name="more_infos">Information en détails</string>
 </resources>
