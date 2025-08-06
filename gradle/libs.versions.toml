@@ -27,6 +27,7 @@ shimmerVersion = "1.3.3"
 datastoreVersion = "1.1.7"
 kotlinJsonVersion = "1.9.0"
 browserVersion = "1.9.0"
+robolectricVersion = "4.13"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -52,6 +53,7 @@ koin-android = { group = "io.insert-koin", name = "koin-android" }  # Includes V
 koin-compose = { group = "io.insert-koin", name = "koin-androidx-compose" }
 koin-test = { group = "io.insert-koin", name = "koin-test" }
 koin-test-junit5 = { group = "io.insert-koin", name = "koin-test-junit5" }
+koin-test-junit4 = { group = "io.insert-koin", name = "koin-test-junit4" }
 coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutinesVersion" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesVersion" }
 viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewModelKtx" }
@@ -70,6 +72,7 @@ shimmer = { group = "com.valentinilk.shimmer", name = "compose-shimmer", version
 datastore = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastoreVersion" }
 serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinJsonVersion" }
 browser = { group = "androidx.browser", name = "browser", version.ref = "browserVersion" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectricVersion" }
 
 [bundles]
 koin = [
@@ -80,6 +83,7 @@ koin = [
 
 koin-testing = [
     "koin-test",
+    "koin-test-junit4",
     "koin-test-junit5"
 ]
 

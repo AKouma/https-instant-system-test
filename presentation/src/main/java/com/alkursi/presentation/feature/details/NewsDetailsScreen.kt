@@ -24,13 +24,12 @@ import org.koin.core.parameter.parametersOf
 @Composable
 internal fun NewsDetailsScreen(
     navController: NavController,
-    articleId: Int
-) {
-
-
-    val viewModel = koinViewModel<NewsDetailsViewModel> {
+    articleId: Int,
+    viewModel: NewsDetailsViewModel = koinViewModel(){
         parametersOf(articleId)
     }
+) {
+
     val state = viewModel.state.collectAsStateWithLifecycle()
 
 

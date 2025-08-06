@@ -10,6 +10,8 @@ import com.alkursi.presentation.feature.home.model.HomeState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -22,8 +24,19 @@ class HomeViewModel(private val getArticlesUseCase: GetArticlesUseCase) : ViewMo
     private var totalResults = Int.MAX_VALUE
 
     private val articlesState = MutableStateFlow<List<Article>>(emptyList())
-    private val homeState = MutableStateFlow<HomeState>(HomeState.Loading)
-    val state = homeState.stateIn(viewModelScope, SharingStarted.Lazily, homeState)
+    private val isLoadingState = MutableStateFlow(false)
+    private val isRefreshingState = MutableStateFlow(false)
+    val state = combine(
+        articlesState,
+        isLoadingState,
+        isRefreshingState
+    ) { articles, isLoading, isRefreshing ->
+        if (isLoading && articles.isEmpty()) {
+            HomeState.Loading
+        } else {
+            HomeState.Loaded(articles = articles, isRefreshing = isRefreshing)
+        }
+    }.stateIn(viewModelScope, SharingStarted.Lazily, HomeState.Loading)
 
     private val eventsChanel = Channel<HomeEvent>()
     val events = eventsChanel.receiveAsFlow()
@@ -32,22 +45,29 @@ class HomeViewModel(private val getArticlesUseCase: GetArticlesUseCase) : ViewMo
     fun loadArticles() {
         viewModelScope.launch {
             runCatching {
-                if (!canLoadArticles()) return@launch
+                if (!canLoadArticles() || isLoadingState.getAndUpdate { true }) return@launch
 
                 val headlines = getArticlesUseCase(page = currentPage, pageSize = pageSize)
                 totalResults = headlines.articlesSize
                 currentPage++
+                isLoadingState.update { false }
                 articlesState.update { currentArticles -> currentArticles + headlines.articles }
-                homeState.update { HomeState.Loaded(articles = articlesState.value) }
             }.onFailure { error ->
-                homeState.update { HomeState.NoArticles }
+                isLoadingState.update { false }
                 when (error) {
+                    //todo send for bottomsheet
                     is NewsError.TechnicalError -> eventsChanel.send(HomeEvent.TechnicalError)
                     is NewsError.DataUnavailable -> eventsChanel.send(HomeEvent.DataUnavailable)
                     is NewsError.ServiceUnavailable -> eventsChanel.send(HomeEvent.ServiceUnavailable)
                 }
             }
         }
+    }
+
+    fun refresh(){
+        if(isRefreshingState.getAndUpdate { true }) return
+        loadArticles()
+        isRefreshingState.update { false }
     }
 
     private fun canLoadArticles(): Boolean = (currentPage - 1) * pageSize < totalResults

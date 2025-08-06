@@ -38,7 +38,7 @@ class NewsRepositoryImpl(
 
     override suspend fun getArticleById(id: Int): Article? = articleStore.getArticleById(id)
 
-    private fun handleResponse(response: Response<HeadlinesDto>): Result<Headlines> {
+    private suspend fun handleResponse(response: Response<HeadlinesDto>): Result<Headlines> {
         return if (response.isSuccessful) {
             response.body()?.let { headlinesDto ->
                 mapResponseStatus(headlinesDto)
@@ -49,9 +49,16 @@ class NewsRepositoryImpl(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun mapResponseStatus(headlinesDto: HeadlinesDto): Result<Headlines> {
+    private suspend fun mapResponseStatus(headlinesDto: HeadlinesDto): Result<Headlines> {
         return when (headlinesDto.status) {
-            Status.OK -> Result.success(newsMapper.mapToDomain(headlinesDto))
+            Status.OK -> {
+                val headlines = Result.success(newsMapper.mapToDomain(headlinesDto))
+                headlines.getOrNull()?.let { hdlines ->
+                    articleStore.saveArticles(hdlines.articles)
+                }
+                return headlines
+            }
+
             Status.MESSAGE -> Result.failure(NewsError.ServiceUnavailable) //todo well handle here articles, by returning articles on store
             Status.ERROR -> Result.failure(NewsError.ServiceUnavailable)
         }

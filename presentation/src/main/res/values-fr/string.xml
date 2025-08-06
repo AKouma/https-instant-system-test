@@ -9,4 +9,6 @@
     <string name="more_information">Pour plus d\'informations, visitez : </string>
     <string name="written_by">Ecrit par : %s</string>
     <string name="more_infos">Information en détails</string>
+    <string name="network_up">Vous êtes connecté(e) à internet</string>
+    <string name="network_down">Vous n\'êtes connecté(e) à internet</string>
 </resources>
