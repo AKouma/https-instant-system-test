@@ -35,6 +35,8 @@ android {
 
 dependencies {
 
+    implementation(project(":core"))
+
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -42,10 +44,13 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.shimmer)
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.koin)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
+    testImplementation(libs.bundles.koin.testing)
     implementation(libs.coil)
     implementation(libs.coil.network)
     implementation(libs.accompanist)

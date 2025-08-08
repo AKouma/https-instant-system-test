@@ -23,6 +23,19 @@ android {
             )
         }
     }
+    flavorDimensions += "env"
+    productFlavors {
+        create("dev") {
+            dimension = "env"
+        }
+        create("beta") {
+            dimension = "env"
+        }
+        create("prod") {
+            dimension = "env"
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -39,12 +52,14 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":design"))
     implementation(project(":presentation"))
+    implementation(project(":config"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(libs.koin)
-    testImplementation(libs.koin.test.junit)
+    implementation(platform(libs.koin.bom))
+    implementation(libs.bundles.koin)
+    testImplementation(libs.bundles.koin.testing)
     implementation(libs.coroutines)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

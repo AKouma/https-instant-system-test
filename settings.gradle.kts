@@ -19,7 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "base-architecture"
+rootProject.name = "flash-news"
 include(":app")
 include(":presentation")
 include(":domain")
@@ -27,3 +27,4 @@ include(":data")
 include(":core")
 include(":injector")
 include(":design")
+include(":config")
