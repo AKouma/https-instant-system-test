@@ -23,13 +23,12 @@ import com.alkursi.presentation.feature.network.NetworkViewModel
 fun AppNavigation() {
 
     val navController = rememberNavController()
-    val context = LocalContext.current
 
     val networkViewModel = viewModel<NetworkViewModel>()
     val networkStatus = networkViewModel.networkState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        networkViewModel.initNetworkListener(context)
+        networkViewModel.initNetworkListener()
     }
 
     Scaffold(

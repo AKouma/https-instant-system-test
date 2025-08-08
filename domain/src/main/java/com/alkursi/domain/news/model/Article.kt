@@ -13,7 +13,8 @@ data class Article(
     val urlToImage: String?,
     private val publishedAt: String?,
     val content: String?
-){
+) {
     val publishedAtDateTime: OffsetDateTime?
-        get() = publishedAt?.let { OffsetDateTime.parse(it) }
+        get() = publishedAt.takeIf { !it.isNullOrEmpty() }
+            ?.let { runCatching { OffsetDateTime.parse(it) }.getOrNull() }
 }
