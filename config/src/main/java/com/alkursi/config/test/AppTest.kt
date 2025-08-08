@@ -32,9 +32,6 @@ abstract class AppTest {
     lateinit var context : Context
 
     @get:Rule
-    val composeRule = createComposeRule()
-
-    @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     val testDispatcher = StandardTestDispatcher()

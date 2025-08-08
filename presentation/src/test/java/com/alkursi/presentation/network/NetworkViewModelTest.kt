@@ -1,17 +1,18 @@
 package com.alkursi.presentation.network
 
-import app.cash.turbine.test
+import app.cash.turbine.testIn
+import app.cash.turbine.turbineScope
 import com.alkursi.config.test.AppTest
 import com.alkursi.core.NetworkConnectivityManager
 import com.alkursi.presentation.feature.network.NetworkViewModel
 import com.alkursi.presentation.feature.network.model.NetworkState
 import io.mockk.every
 import io.mockk.impl.annotations.RelaxedMockK
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import kotlin.test.assertEquals
@@ -28,25 +29,22 @@ class NetworkViewModelTest : AppTest() {
         viewModel = NetworkViewModel(networkManager)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `networkState should update to Connected and Disconnected`() = runTest {
-        val connectionFlow = MutableSharedFlow<Boolean>(replay = 1)
-        every { networkManager.isConnected } returns connectionFlow as StateFlow<Boolean>
+        turbineScope {
+            val connectionFlow = MutableStateFlow(false)
+            every { networkManager.isConnected } returns connectionFlow
 
-        viewModel.initNetworkListener()
+                    viewModel.initNetworkListener()
 
-        val job = launch {
-            viewModel.networkState.test {
-                connectionFlow.emit(true)
-                assertEquals(NetworkState.Connected, awaitItem())
+            val state = viewModel.networkState.testIn(backgroundScope)
+            connectionFlow.update { true }
 
-                connectionFlow.emit(false)
-                assertEquals(NetworkState.Disconnected, awaitItem())
-            }
+            assertEquals(NetworkState.Unknown, state.awaitItem())
+            assertEquals(NetworkState.Connected, state.awaitItem())
+
+            connectionFlow.update { false }
+            assertEquals(NetworkState.Disconnected, state.awaitItem())
         }
-
-        advanceUntilIdle()
-        job.cancel()
     }
 }
