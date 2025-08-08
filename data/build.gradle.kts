@@ -70,7 +70,10 @@ dependencies {
     implementation(libs.okhttp.interceptor)
     implementation(libs.coroutines)
     implementation(libs.viewmodel)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.junit)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.mockk)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

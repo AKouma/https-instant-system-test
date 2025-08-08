@@ -12,33 +12,28 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class NetworkViewModel : ViewModel() {
+class NetworkViewModel(
+    private val networkManager: NetworkConnectivityManager
+) : ViewModel() {
+
     private val _networkState = MutableStateFlow<NetworkState>(NetworkState.Unknown)
     val networkState: StateFlow<NetworkState> =
         _networkState.stateIn(viewModelScope, SharingStarted.Lazily, NetworkState.Unknown)
 
-    private var networkManager: NetworkConnectivityManager? = null
-
-    fun initNetworkListener(context: Context) {
-        networkManager = NetworkConnectivityManager(context)
-
+    fun initNetworkListener() {
         viewModelScope.launch {
-            networkManager?.isConnected?.collect { isConnected ->
+            networkManager.isConnected.collect { isConnected ->
                 _networkState.update {
-                    if (isConnected) {
-                        NetworkState.Connected
-                    } else {
-                        NetworkState.Disconnected
-                    }
+                    if (isConnected) NetworkState.Connected else NetworkState.Disconnected
                 }
             }
         }
 
-        networkManager?.startListening()
+        networkManager.startListening()
     }
 
     override fun onCleared() {
         super.onCleared()
-        networkManager?.stopListening()
+        networkManager.stopListening()
     }
 }

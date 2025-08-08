@@ -18,13 +18,14 @@ import com.alkursi.presentation.feature.details.NewsDetailsScreen
 import com.alkursi.presentation.feature.home.HomeScreen
 import com.alkursi.presentation.feature.network.NetworkSnackBar
 import com.alkursi.presentation.feature.network.NetworkViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun AppNavigation() {
 
     val navController = rememberNavController()
 
-    val networkViewModel = viewModel<NetworkViewModel>()
+    val networkViewModel = koinViewModel<NetworkViewModel>()
     val networkStatus = networkViewModel.networkState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {

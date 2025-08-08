@@ -9,8 +9,7 @@ class GetArticlesUseCase(
 ) {
 
     suspend operator fun invoke(page: Int, pageSize: Int): Headlines =
-        newsRepository.getTopHeadlines(country = getCountryCode(), page = page, pageSize = pageSize)
-            .getOrThrow()
+        newsRepository.getTopHeadlines(country = getCountryCode(), page = page, pageSize = pageSize).getOrThrow()
 
 
     private fun getCountryCode(): String = countryRepository.getCountryInfo().code
